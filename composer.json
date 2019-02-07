@@ -1,10 +1,14 @@
 {
-  "name": "log1x/sage-directives",
+  "name": "dawidurbanski/sage-directives",
   "type": "package",
   "license": "MIT",
   "description": "A set of Blade directives for use with Roots Sage.",
-  "homepage": "https://github.com/log1x/sage-directives",
+  "homepage": "https://github.com/dawidurbanski/sage-directives",
   "authors": [
+    {
+      "name": "Dawid Urbański",
+      "email": "hi@dawidurbanski.com"
+    },
     {
       "name": "Brandon Nifong",
       "email": "brandon@tendency.me"
@@ -17,7 +21,7 @@
     "blade"
   ],
   "support": {
-    "issues": "https://github.com/log1x/sage-directives/issues"
+    "issues": "https://github.com/dawidurbanski/sage-directives/issues"
   },
   "autoload": {
     "files": [
