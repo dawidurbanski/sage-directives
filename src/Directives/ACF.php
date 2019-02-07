@@ -209,4 +209,30 @@ return [
     'endoptions' => function () {
         return "<?php endwhile; endif; ?>";
     },
+
+    /** Create @images() Blade directive */
+    'images' => function ($expression) {
+        return "<?php foreach (get_field({$expression}) as \$image) : ?>";
+    },
+
+    /** Create @subimages() Blade directive */
+    'subimages' => function ($expression) {
+        return "<?php foreach (get_sub_field({$expression}) as \$image) : ?>";
+    },
+
+    /** Create @endimages Blade directive */
+    'endimages' => function () {
+        return "<?php endforeach; ?>";
+    },
+
+    /** Create @image() Blade directive */
+    'image' => function ($expression) {
+        if (str_contains($expression, ',')) {
+            $expression = Util::parse($expression);
+
+            return "<?= \$image[{$expression->get(0)}][{$expression->get(1)}]; ?>";
+        }
+
+        return "<?= \$image[{$expression}]; ?>";
+    },
 ];
