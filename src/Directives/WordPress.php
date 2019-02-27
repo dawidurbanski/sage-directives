@@ -21,6 +21,26 @@ return [
 
     /** Create @posts Blade directive */
     'posts' => function ($expression) {
+        if (str_contains($expression, ',')) {
+            $expression = Util::parse($expression);
+
+            return "<?php if (is_a({$expression->get(0)}, 'WP_Query')) : ?>".
+                   "<?php \$custom_query = {$expression->get(0)}; ?>".
+                   "<?php elseif (is_a({$expression->get(0)}, 'WP_Post')) : ?>".
+                   "<?php \$custom_query = new WP_Query(['p'=>({$expression->get(0)})->ID]); ?>".
+                   "<?php elseif (is_numeric({$expression->get(0)})) : ?>".
+                   "<?php \$custom_query = new WP_Query(['p'=>{$expression->get(0)}]); ?>".
+                   "<?php elseif (is_array({$expression->get(0)})) : ?>".
+                   "<?php \$map = function(\$value) { return is_a(\$value, 'WP_Post') ? \$value->ID : \$value; }; ?>".
+                   "<?php \$post_in = array_map(\$map, {$expression->get(0)}); ?>".
+                   "<?php \$custom_query = new WP_Query(['post_type'=>{$expression->get(1)},'posts_per_page'=>-1,'post__in'=>\$post_in,'ignore_sticky_posts'=>true]); ?>".
+                   "<?php else : ?>".
+                   "<?php \$custom_query = {$expression->get(0)}; ?>".
+                   "<?php endif; ?>".
+                   "<?php if (\$custom_query->have_posts()) : ?>".
+                   "<?php while (\$custom_query->have_posts()) : \$custom_query->the_post(); ?>";
+        }
+
         if (!empty($expression)) {
             return "<?php if (is_a({$expression}, 'WP_Query')) : ?>".
                    "<?php \$custom_query = {$expression}; ?>".
